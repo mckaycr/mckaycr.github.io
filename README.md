@@ -1,1 +1,1 @@
-# [mckaycr.github.io](http://www.mckaycr.github.io)
+# [mckaycr.github.io](http://mckaycr.github.io)
