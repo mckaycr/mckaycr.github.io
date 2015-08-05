@@ -1,0 +1,134 @@
+<html lang="">
+<meta itemprop="description" content="<?php echo $pageDescription;?>"/>
+<meta itemprop="keywords" content="<?php echo $pageKeywords;?>"/>
+<head>  
+  <meta charset="utf-8">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <link type="text/css" rel="stylesheet" href="css/mystyle.css"/>
+  <link type="text/css" rel="stylesheet" href="css/gallery.css"/>
+  <title><?php echo $pageTitle; ?></title>
+  <?php echo $Page_Tags; ?>
+  <link href="https://plus.google.com/105586456005894800662" rel="publisher" />
+  <link href="https://plus.google.com/110183631811602102435" rel="author" />
+  <meta name="author" content="Christopher McKay" />
+</head>
+
+<body>
+<?php include_once("analyticstracking.php") ?>
+<!-- Google Tag Manager -->
+  <noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-TG4RVR"height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TG4RVR');
+  </script>
+<!-- End Google Tag Manager -->
+<div itemscope itemtype="http://schema.org/LocalBusiness" class="container">
+<!-- Begining of header, light portion above title header -->
+  <div id="header">
+    <div style="float:left;"><img itemprop="image" alt="Veterans of Foreign Wars" src="images/vfw_header.png" /></div>
+      <div id="topnav">
+        <ul>
+          <li><a href="rentals.php">RENTALS</a></li>
+          <li><a href="events.php">EVENTS</a></li>
+          <li><a href="photos.php?src=5480558434188387137">PHOTOS</a></li>
+          <li><a href="mailto:commander@vfwpost10067.org"><meta itemprop="email" content="commander@vfwpost10067.org" />CONTACT US</a></li>
+        </ul>         
+     </div>
+  </div>
+<!-- Begining of banner, This part contains the header -->
+  <div id="banner">
+    <div><img style="margin-top:20px;" src="images/welcome.png" alt="Welcome to the Home of Heroes"/></div>
+      <div><img src="images/title.png" alt="Gunpowder Post 10067"/></div>
+<!-- Begining of Navigation Bar -->
+      <div id="navbar" >
+        <ul>
+          <li><a href="index.php">HOME</a></li>
+          <li><a href="officers.php">OFFICERS</a></li>
+          <li><a href="contactus.php">FIND US</a></li>
+          <li><a href="newsletter.php">NEWSLETTER</a></li>
+                    <li><a href="ladies_auxiliary.php">LADIES AUX</a></li>
+          <li><a href="mens_auxiliary.php">MEN'S AUX</a></li>
+          <li><a href="canteen.php">CANTEEN</a></li>
+        </ul>     
+      </div>
+  </div>
+<script>
+  function appendResults(text) {
+    var results = document.getElementById('results');
+    var newDiv = results.appendChild(document.createElement('div'));
+    newDiv.innerHTML = text;
+    //results.appendChild(document.createTextNode(text));
+  }
+
+  function makeRequest() {
+    var request = gapi.client.plus.activities.list({
+      'userId' : '105586456005894800662',
+      'collection' : 'public'
+    });
+
+    request.execute(function(resp) {
+      console.log(resp);
+      var numItems = resp.items.length;
+      for (var i = 0; i < numItems; i++) {
+        var strTitle = resp.items[i].title;
+        var strDateTime = resp.items[i].updated;
+        var numAttach = resp.items[i].object.attachments.length
+        var strHTML = '<h1>'+strTitle+'</h1><h6>'+moment(strDateTime).format('MMMM Do YYYY, h:mm:ss a')+'</h6><p>'+resp.items[i].object.content+'</p>'
+        if(numAttach>0){
+          for(var j = 0; j < numAttach; j++){
+           if(resp.items[i].object.attachments[j].objectType=="event"){
+                  strHTML = strHTML + "<hr/><span><a tabindex='0' target='_blank' href="+resp.items[i].object.attachments[j].url+">Event Details</a>";
+                  strHTML = strHTML + "<a tabindex='0' target='_blank' href="+resp.items[i].object.attachments[j].url+"><h6>"+resp.items[i].object.attachments[j].url+"</h6></a></span>";
+           }else{strHTML="";}
+
+          }
+        }
+        if(strHTML!=""){
+        appendResults(strHTML);
+    	}
+
+        //console.log('ID: ' + resp.items[i].id + ' Content: ' + resp.items[i].object.content);
+      }
+    });
+   }
+
+  function load() {
+    gapi.client.setApiKey('AIzaSyAXfKSO8zO-ovfSKN9JZ73bEMn1mlWDhRs');
+    gapi.client.load('plus', 'v1', makeRequest);
+  }
+</script>
+<script src="https://apis.google.com/js/client.js?onload=load"></script>
+<?php include "gallery.php";?>
+<div id="main">
+	<div id="column_left">
+		<div id="results">
+		</div>
+	</div>
+	<div id="column_right">
+		<?php include "aside.php";?>
+	</div>
+</div>
+  <!--  Begining of footer -->
+  <div id="footer">
+    <p style="font-size: 10px;">DISCLAIMER: Content found on this site, unless otherwise 
+    noted, is provided for information only and does not necessarily represent the 
+    views and opinions of the Veterans of Foreign Wars of the United States, its 
+    Departments, Districts or this Post. Any change of content should be addresed 
+    via e-mail to: <a href="mailto:webmaster@vfwpost10067.org"><meta itemprop="email" content="webmaster@vfwpost10067.org" />webmaster@vfwpost10067.org</a></p>
+  </div>
+  <meta content="http://vfwpost10067.org" itemprop="url">
+  <span itemprop="address" itemscope="" itemtype="http://schema.org/PostalAddress">
+    <meta content="21220" itemprop="postalCode">
+    <meta content="United States" itemprop="addressCountry">
+    <meta content="Maryland" itemprop="addressRegion">
+    <meta content="Middle River" itemprop="addressLocality">
+    <meta content="6309 Ebenezer Rd" itemprop="streetAddress">
+  </span>
+  <meta content="410-335-8933" itemprop="telephone">
+  <meta itemprop="name" content="Gunpowder Post 10067">
+
+  </div>
+</body>
+
+</html>
